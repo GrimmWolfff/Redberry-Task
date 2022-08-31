@@ -1,0 +1,307 @@
+openapi: 3.0.0
+info:
+  title: PCfy API
+  version: 0.1.9
+
+servers:
+  - url: https://pcfy.redberryinternship.ge/api
+    description: production server
+  - url: http://localhost:8000/api
+    description: local server
+paths:
+  /teams:
+    get:
+      tags:
+        - "Generals"
+      summary: Returns a list of all teams
+      responses:
+        '200':
+          description: A JSON array of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                 data:
+                  - id: 1
+                    name: დეველოპერი
+                  - id: 2
+                    name: HR
+                  - id: 3
+                    name: გაყიდვები
+                  - id: 4
+                    name: დიზაინი
+                  - id: 5
+                    name: მარკეგინგი
+  /brands:
+    get:
+      tags:
+          - "Generals"
+      summary: Returns a list of all brands
+      responses:
+        '200':
+          description: A JSON array of brands
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                  data:
+                    - id: 1
+                      name: HP
+                    - id: 2
+                      name: Dell
+                    - id: 3
+                      name: Microsoft
+                    - id: 4
+                      name: Apple
+                    - id: 5
+                      name: Lenovo
+                    - id: 6
+                      name: Acer
+  /cpus:
+    get:
+      tags:
+          - "Generals"
+      summary: Returns a list of all CPUs
+      responses:
+        '200':
+          description: A JSON array of CPUs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                  data:
+                    - id: 1
+                      name: Intel Core i3
+                    - id: 2
+                      name: Intel Core i5
+                    - id: 3
+                      name: Intel Core i7
+                    - id: 4
+                      name: Intel Core i9
+                    - id: 5
+                      name: AMD Ryzen 3
+  /positions:
+    get:
+      tags:
+          - "Generals"
+      summary: Returns a list of all positions
+      responses:
+        '200':
+          description: A JSON array of positions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                example:
+                  data:
+                    - id: 1
+                      name: ინტერნი
+                      teams_id: 1
+                    - id: 2
+                      name: HR ბიზნეს დეველოპერი
+                      teams_id: 3
+  /laptop/create:
+    post:
+      tags:
+        - Laptops
+      summary: Create laptop
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - "name"
+                - "surname"
+                - "team_id"
+                - "position_id"
+                - "email"
+                - "phone_number"
+                - "token"
+                - "laptop_name"
+                - "laptop_image"
+                - "laptop_brand_id"
+                - "laptop_cpu"
+                - "laptop_cpu_cores"
+                - "laptop_cpu_threads"
+                - "laptop_ram"
+                - "laptop_hard_drive_type"
+                - "laptop_state"
+                - "laptop_price"
+              properties:
+                name:
+                  type: string
+                  example: გელა
+                surname:
+                  type: string
+                  example: გელაშვილი
+                team_id:
+                  type: number
+                  example: 1
+                position_id:
+                  type: number
+                  example: 1
+                phone_number:
+                  type: string
+                  example: "+995555555555"
+                email:
+                  type: string
+                  example: gela.gelashvili@redberry.ge
+                token:
+                  type: string
+                  example: e113a24d23bb6c990b531705e476123f
+                laptop_name:
+                  type: string
+                  example: HP
+                laptop_image:
+                  type: string
+                  format: binary
+                laptop_brand_id:
+                  type: number
+                  example: 1
+                laptop_cpu:
+                  type: string
+                  example: Intel Core i3
+                  enum:
+                    - Intel Core i3
+                    - Intel Core i5
+                    - Intel Core i7
+                    - Intel Core i9
+                    - AMD Ryzen 3
+                    - AMD Ryzen 5
+                    - AMD Ryzen 7
+                    - AMD Athlon
+                    - Apple M1
+                    - Apple M2
+                laptop_cpu_cores:
+                  type: number
+                  example: 64
+                laptop_cpu_threads:
+                  type: number
+                  example: 128
+                laptop_ram:
+                  type: number
+                  example: 34
+                laptop_hard_drive_type:
+                  type: string
+                  example: HDD
+                  enum:
+                    - HDD
+                    - SSD
+                laptop_state:
+                  type: string
+                  example: new
+                  enum:
+                    - new
+                    - used
+                laptop_purchase_date:
+                  type: string
+                  example: 10-10-2003
+                laptop_price:
+                  type: number
+                  example: 1600
+      responses:
+        '200':
+          description: Registers user
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: Information recorded
+        '422':
+          description: Registers user
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                message: The name should only contain Georgian letters (and 1 more error).
+                errors:
+                  name:
+                    - The name should only contain Georgian letters.
+                  surname:
+                    - The surname should only contain Georgian letters
+  /laptops:
+    get:
+      tags:
+        - Laptops
+      summary: get all laptops
+      parameters:
+        - in: query
+          schema:
+            type: string
+          name: token
+          required: true
+      responses:
+        '200':
+          description: Returns all laptops
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  - laptop:
+                      image: /storage/images/6Pe7IYmwTjWN0elPsjKkcxDlWxHMGSY75N1LRU7W.jpg
+                      name: "HP"
+                      id: 1
+                    user:
+                      name: გელა
+                      surname: გელაშვილი
+  /laptop/{id}:
+    get:
+      tags:
+        - Laptops
+      summary: get full info about user and their filled in laptop
+      parameters:
+        - in: query
+          schema:
+            type: string
+          name: token
+          required: true
+        - in: path
+          schema:
+            type: string
+          name: id
+          required: true
+      responses:
+        "200":
+          description: Get full information about Laptop
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                data:
+                  user:
+                    name: გელა
+                    surname: გელაშვილი
+                    team_id: 1
+                    position_id: 1
+                    email: gela.gelashvili@redberry.ge
+                    phone_number: +995555555555
+                  laptop:
+                    name: HP
+                    image: /storage/images/uLuuQCcXG9MhotvvMbezzXvPrEJFc5m74JfUlWdp.jpg
+                    brand_id: 1
+                    cpu_id: 11
+                    ram: 34
+                    hard_drive_type: HDD
+                    state: new
+                    purchase_date: 10-10-2003
+                    price: 1600
+
+

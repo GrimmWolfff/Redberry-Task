@@ -1,0 +1,24 @@
+GET https://pcfy.redberryinternship.ge/api/laptops?token=3803949bbbced161d9ae347037734b4a
+
+Content-Type: multipart/form-data
+
+{
+    "name":"ზაალ", 
+    "surname":"ჩხეიძე",
+    "team_id": 2,
+    "position_id": 2,
+    "email": "gg@redberry.ge",
+    "phone_number":"+995555555555",
+    "laptop_name":"tesli", 
+    "laptop_brand_id": 1, 
+    "laptop_cpu": "Intel Core i3", 
+    "laptop_cpu_cores": 7, 
+    "laptop_cpu_threads": 12,
+    "laptop_purchase_date": "12/12/12", 
+    "laptop_price": 400,
+    "laptop_image": "/storage/images/uLuuQCcXG9MhotvvMbezzXvPrEJFc5m74JfUlWdp.jpg",
+    "laptop_hard_drive_type":"HDD",
+    "laptop_state": "new",
+    "ram": 16,
+    "token": "13187bbe373b570b37c8193e1b2ff4c6"
+}
