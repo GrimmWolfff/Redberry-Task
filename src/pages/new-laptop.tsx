@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import Modal from '../components/Modal';
 import type { CPU, Laptop, User } from "../types";
 import axios from "axios";
-import { Buffer } from 'buffer';
 
 //* Assets
 import Camera from '../assets/camera.png';
@@ -175,7 +174,7 @@ export default function NewLaptop(): JSX.Element {
                 //     console.log(p);
 
                 createLaptop(formdata);
-                // SetShowModal(true);
+                SetShowModal(true);
             }
         } catch (error) {
             console.error(error);

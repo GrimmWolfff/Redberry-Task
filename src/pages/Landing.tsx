@@ -1,7 +1,7 @@
 import { useLayoutEffect, lazy } from 'react';
 
 //* Vite images
-import guyImg from '../assets/Landing.png';
+// import guyImg from '../assets/Landing.png';
 import logo from '../assets/LOGOTXT.png';
 import mobileLanding from '../assets/LandingMobile.png';
 
