@@ -5,7 +5,7 @@ import { screenState } from "../context";
 import { useRecoilState } from "recoil";
 import type { Position, Team } from '../types/index';
 
-const localstorage = new LocalStorage();
+// const localstorage = new LocalStorage();
 
 export default function NewUser(): JSX.Element {
     const [isMobile, setIsMobile] = useRecoilState(screenState);  
