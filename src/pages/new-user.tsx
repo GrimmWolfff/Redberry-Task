@@ -1,3 +1,5 @@
+// FIRST PAGE OF THE FORM
+
 import { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { usePersistentStorageValue, LocalStorage } from '../hooks/localStorage';
 import { motion } from "framer-motion";
