@@ -10,6 +10,7 @@ import { useRecoilState } from "recoil";
 
 import { motion } from "framer-motion";
 
+//? Landing page
 
 export default function Landing():JSX.Element {
     const [isMobile, setIsMobile] = useRecoilState(screenState);  

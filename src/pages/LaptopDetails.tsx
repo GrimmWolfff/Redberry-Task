@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import type { FullLaptop } from '../types';
+
+//* Image
 import backArrow from '../assets/less-than-symbol.png';
+
+//? Laptop Details Page
 
 export default function LaptopDetails(): JSX.Element {
     const [Laptop, SetLaptop] = useState<FullLaptop>();
