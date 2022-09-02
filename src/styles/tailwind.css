@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-fill {
+        @apply text-xl rounded-lg p-4 pr-6 pl-6 bg-[#62A1EB] text-white hover:bg-blue-400 break-normal font-bold text-center
+    }
+    .btn-empty {
+        @apply text-left rounded-lg bg-white text-[#62A1EB]
+    }
+    .input {
+        @apply w-full rounded-md mt-2 mb-2 p-2 border border-2 h-[7vh] md:h-auto
+    }
+    .input-success {
+        @apply border-blue-400 focus:outline focus:outline-2 focus:outline-blue-400 focus:border-[#6499FF] focus:bg-[rgba(43,75,242,0.06)]
+    }
+    .input-error {
+        @apply border-[rgba(229,47,47,1)] focus:outline-none bg-white
+    }
+}

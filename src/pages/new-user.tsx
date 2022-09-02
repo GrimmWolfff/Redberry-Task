@@ -1,16 +1,14 @@
 import { useState, useLayoutEffect, useEffect, useRef } from 'react';
 import { usePersistentStorageValue, LocalStorage } from '../hooks/localStorage';
 import { motion } from "framer-motion";
-
-type Team = { id: number, name: string };
-type Position = { id: number, name: string, team_id: number };
+import { screenState } from "../context";
+import { useRecoilState } from "recoil";
+import type { Position, Team } from '../types/index';
 
 const localstorage = new LocalStorage();
 
 export default function NewUser(): JSX.Element {
-    const [isMobile, setIsMobile] = useState<boolean>(false);
-    const [teams, setTeams] = useState<Team[]>([]);
-    const [positions, setPositions] = useState([]);
+    const [isMobile, setIsMobile] = useRecoilState(screenState);  
 
     const [Name, setName] = usePersistentStorageValue('name', '');
     const [LastName, setLastName] = usePersistentStorageValue('lastname', '');
@@ -21,6 +19,8 @@ export default function NewUser(): JSX.Element {
 
     const [Result, setResult] = usePersistentStorageValue('user', {});
 
+    const [teams, setTeams] = useState<Team[]>([]);
+    const [positions, setPositions] = useState<Position[]>([]);
     const [error, setError] = useState({
         name: false,
         lastname: false,
@@ -63,17 +63,21 @@ export default function NewUser(): JSX.Element {
         }
         GetTeams();
         GetPositions();
+    }, []);
+    
+    useEffect(() => {
         if (nameRef     .current) nameRef.current.value = Name;
         if (lastnameRef .current) lastnameRef.current.value = LastName;
         if (teamRef     .current) teamRef.current.selectedIndex = +Team;
         if (positionRef .current) positionRef.current.selectedIndex= +Position;
         if (mailRef     .current) mailRef.current.value = Mail;
         if (phoneRef    .current) phoneRef.current.value = Phone;
-    }, []);
+    }, [teamRef.current?.selectedIndex, positionRef.current?.selectedIndex])
 
     const handleChange = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
+        //! Make sure refs are not undefined
         if(!nameRef.current || !lastnameRef.current || !mailRef.current || !phoneRef.current) { return; }
         
             //* Handle Name
@@ -94,24 +98,24 @@ export default function NewUser(): JSX.Element {
 
         if(phoneVal.substring(0, 5) !== '+9955' || phoneVal.length !== 13) 
             setError(old => ({...old, phone: true }));
-
-        setResult({
-            name: Name,
-            surname: LastName,
-            team_id: Team,
-            position_id: Position,
-            email: Mail,
-            phone_number: Phone
-        });
-        localstorage.setItem('result', JSON.stringify(Result));
     }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setResult({
+            name: nameRef?.current?.value,
+            surname: lastnameRef?.current?.value,
+            team_id: teamRef?.current?.selectedIndex,
+            position_id: positionRef?.current?.selectedIndex,
+            email: mailRef?.current?.value,
+            phone_number: phoneRef?.current?.value
+        });
+
         if(!Object.entries(error).filter(arr => arr[1] === true).length) {
             window.location.assign('/new-laptop');
+            console.log(Result)
         }
     }
-    
+
     return (
         <motion.form initial={{ x: 1000 }} animate={{ x: 0 }} transition={{ duration: 0.5 }}  
         onChange={handleChange} onSubmit={handleSubmit} encType="multipart/form-data"
@@ -130,8 +134,7 @@ export default function NewUser(): JSX.Element {
                     }}
                     ref={nameRef} id="name" type="text" placeholder="გრიშა" 
                     className={`rounded-md w-full mt-2 mb-2 p-2 border border-5
-                    ${!error.name ? 'border-blue-400 focus:outline focus:outline-1 focus:outline-blue-400' 
-                    : 'border-red-400 focus:outline-none' } `} />
+                    ${!error.name ? 'input-success' : 'input-error' } input `} />
                     {!error.name 
                     ? (<sub className="mt-2 mb-2 w-full text-gray-600">მინიმუმ 2 სიმბოლო, ქართული ასოები</sub>)
                     : (<sub className="mt-2 mb-2 w-full text-red-600">გამოიყენე ქართული ასოები</sub>)}
@@ -149,8 +152,7 @@ export default function NewUser(): JSX.Element {
                     }}
                     ref={lastnameRef} id="lastname" type="text" placeholder="ბაგრატიონი"
                     className={`rounded-md w-full mt-2 mb-2 p-2 border border-5  
-                    ${!error.lastname ? 'border-blue-400 focus:outline focus:outline-1 focus:outline-blue-400' 
-                    : 'border-red-400 focus:outline-none' } `} />
+                    ${!error.lastname ? 'input-success' : 'input-error' } input `} />
                     {!error.lastname 
                     ? (<sub className="mt-2 mb-2 w-full text-gray-600">მინიმუმ 2 სიმბოლო, ქართული ასოები</sub>)
                     : (<sub className="mt-2 mb-2 w-full text-red-600">გამოიყენე ქართული ასოები</sub>)}
@@ -159,7 +161,7 @@ export default function NewUser(): JSX.Element {
 
                 {/* თიმი */}
             
-            <select required ref={teamRef} defaultValue="თიმი" onChange={e => setTeam(String(e.target.selectedIndex))} 
+            <select required ref={teamRef} onChange={e => setTeam(String(e.target.selectedIndex))} 
             className="w-full bg-[#EBEBEB] font-semibold rounded-lg p-[1rem] text-sm mt-4 mb-4 ra-select m-0 md:m-8">
                 <option disabled hidden value="თიმი">თიმი</option>
                 {teams.map((team: Team, index: number) => (
@@ -183,8 +185,7 @@ export default function NewUser(): JSX.Element {
                 <label htmlFor="mail" className="font-semibold">მეილი</label>
                 <input required onChange={e => { setMail(e.target.value); setError(old => ({ ...old, mail: false })) }}
                 ref={mailRef} id="mail" type="email" placeholder="grish666@redberry.ge"
-                className={`${!error.mail ? 'border-blue-400 focus:outline focus:outline-1 focus:outline-blue-400' 
-                : 'border-red-400 focus:outline-none' } rounded-md w-full p-2 border border-5`} />
+                className={`${!error.mail ? 'input-success' : 'input-error' } input rounded-md w-full p-2 border border-5`} />
                 <sub className={`${error.mail ? 'text-red-600' : 'text-gray-600'} mt-2`}>უნდა მთავრდებოდეს @redberry.ge-ით</sub>
             </div>
 
@@ -195,13 +196,13 @@ export default function NewUser(): JSX.Element {
                 <input required
                 onChange={e => { setPhone(e.target.value); setError(old => ({ ...old, phone: false })) }} 
                 ref={phoneRef} id="phone" type="text" placeholder="+995 598 00 07 01"
-                className={`${!error.phone ? 'border-blue-400 focus:outline focus:outline-1 focus:outline-blue-400' 
-                : 'border-red-400 focus:outline-none' } rounded-md w-full p-2 border border-5`} />
+                className={`${!error.phone ? 'input-success' : 'input-error' } input rounded-md w-full p-2 border border-5`} />
                 <sub className={`${error.phone ? 'text-red-600' : 'text-gray-600'} mt-2`}>
                     {isMobile ? 'ქართული მობ-ნომრის ფორმატს' : 'უნდა აკმაყოფილებდეს ქართული მობ-ნომრის ფორმატს'} 
                 </sub>
             </div>
-            <input type="submit" value="შემდეგი" className="right-0 rounded-lg mt-20 md:w-40 w-28 p-2 h-12 bg-[#62A1EB] text-white" />
+            <input type="submit" value="შემდეგი" className="right-0 rounded-lg mt-10 md:w-40 w-28 p-2 h-12 bg-[#62A1EB] 
+            hover:bg-blue-400 text-white" />
         </motion.form>
     );
 }
