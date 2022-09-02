@@ -10,7 +10,6 @@ import { useRecoilState } from "recoil";
 import { usePersistentStorageValue, LocalStorage } from '../hooks/localStorage';
 const localstorage = new LocalStorage();
 
-
 export default function Top(): any {
     const [isMobile, setIsMobile] = useRecoilState(screenState);
     const [IsPage1, setIsPage1] = useState<boolean>(true);
@@ -36,6 +35,9 @@ export default function Top(): any {
     }, [ShowModal]);
     
     useEffect(() => {
+
+        //? Handle navbar for different routes
+
         setIsMobile(window.screen.width < 600);
         if(window.location.pathname === '/new-user') {
             setActive("თანამშრომლების ინფო");
