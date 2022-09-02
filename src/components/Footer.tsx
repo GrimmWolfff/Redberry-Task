@@ -3,6 +3,9 @@ import redberry from '../assets/LOGO.png';
 
 export default function Footer(): JSX.Element {
     const [ShowFooter, setShowFooter] = useState<boolean>(false);
+    
+    //? Make footer visible to the specific routes only
+
     useEffect(() => {
         if(window.location.pathname.slice(0, 7) === '/laptop' || window.location.pathname === '/my-laptops') {
             setShowFooter(false);
