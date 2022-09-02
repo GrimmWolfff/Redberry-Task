@@ -1,3 +1,5 @@
+//? Loader
+
 export default function Loader() {
     return (
         <div role="status" className="w-full h-screen flex flex-col justify-around items-center">
