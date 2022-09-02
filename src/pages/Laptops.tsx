@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import type { SingleLaptopType } from "../types";
 import { motion } from "framer-motion";
 
+//? All laptops page
+
 export default function Laptops() {
     const [Laptops, SetLaptops] = useState<SingleLaptopType[]>();
     
