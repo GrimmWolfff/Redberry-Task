@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, lazy } from 'react';
 
 //* Vite images
 import guyImg from '../assets/Landing.png';
@@ -10,10 +10,10 @@ import { useRecoilState } from "recoil";
 
 import { motion } from "framer-motion";
 
-import SVGL from '../components/svg_landing';
 
 export default function Landing():JSX.Element {
     const [isMobile, setIsMobile] = useRecoilState(screenState);  
+    const SVGL = lazy(() => import('../components/svg_landing'));
     useLayoutEffect(() => {
         function updateSize() {
             setIsMobile(window.innerWidth < 600);

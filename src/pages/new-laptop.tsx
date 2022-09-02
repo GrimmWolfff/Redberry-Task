@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Modal from '../components/Modal';
 import type { CPU, Laptop, User } from "../types";
 import axios from "axios";
+import { Buffer } from 'buffer';
 
 //* Assets
 import Camera from '../assets/camera.png';
@@ -128,10 +129,15 @@ export default function NewLaptop(): JSX.Element {
             return;
         }
 
-        const formdata = new FormData();
+        if(!Image) {
+            return;
+        }
+
 
         const { name, surname, team_id, position_id, email, phone_number }:User = await localstorage.getItem('user');
 
+        const formdata = new FormData();
+        console.log(team_id);
         formdata.append('name', name) 
         formdata.append('surname', surname)
         formdata.append('team_id', String(team_id))
@@ -153,9 +159,6 @@ export default function NewLaptop(): JSX.Element {
 
         const headers = { 'Content-Type': 'multipart/form-data' };
 
-        if(!Image) {
-            return;
-        }
         const createLaptop = async (data: FormData) => {
             await axios.post(`${import.meta.env.VITE_URL}/laptop/create`, 
                 data,
@@ -168,10 +171,11 @@ export default function NewLaptop(): JSX.Element {
         }
         try {
             if(!Object.entries(error).filter(arr => arr[1] === true).length) {
-                for (const p of formdata)
-                    console.log(p);
-                // createLaptop(formdata);
-                SetShowModal(true);
+                // for (const p of formdata)
+                //     console.log(p);
+
+                createLaptop(formdata);
+                // SetShowModal(true);
             }
         } catch (error) {
             console.error(error);
@@ -284,7 +288,7 @@ export default function NewLaptop(): JSX.Element {
             <div className="gap-5 h-auto md:h-[16vh] w-full flex flex-col md:flex-row justify-between items-center">
             
                 <select required ref={cpuRef} id="ss" defaultValue="CPU" onChange={e => setCpu(e.target.value)} 
-                    className="md:w-1/3 w-[95%] bg-[#EBEBEB] font-semibold rounded-lg p-[1rem] text-sm ra-select focus:outline-none mt-2">
+                className="md:w-1/3 w-[95%] bg-[#EBEBEB] font-semibold rounded-lg p-[1rem] text-sm ra-select focus:outline-none mt-2">
                     <option disabled hidden value="CPU">CPU</option>
                     {CPUS.map((cpu: CPU, index: number) => (
                         <option key={index}>{cpu.name}</option>

@@ -14,6 +14,7 @@ export default function NewUser(): JSX.Element {
     const [LastName, setLastName] = usePersistentStorageValue('lastname', '');
     const [Team, setTeam] = usePersistentStorageValue('team', '');
     const [Position, setPosition] = usePersistentStorageValue('position', '');
+    const [SelectedPosition, setSelectedPosition] = usePersistentStorageValue('position', '');
     const [Mail, setMail] = usePersistentStorageValue('mail', '');
     const [Phone, setPhone] = usePersistentStorageValue('phone', '');
 
@@ -69,10 +70,16 @@ export default function NewUser(): JSX.Element {
         if (nameRef     .current) nameRef.current.value = Name;
         if (lastnameRef .current) lastnameRef.current.value = LastName;
         if (teamRef     .current) teamRef.current.selectedIndex = +Team;
-        if (positionRef .current) positionRef.current.selectedIndex= +Position;
+        if (positionRef .current) positionRef.current.selectedIndex= +SelectedPosition;
         if (mailRef     .current) mailRef.current.value = Mail;
         if (phoneRef    .current) phoneRef.current.value = Phone;
     }, [teamRef.current?.selectedIndex, positionRef.current?.selectedIndex])
+
+    const handlePositions = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        e.preventDefault();
+        setPosition(String(positions.filter((p:Position) => p.name == e.target.value)[0].id));
+        setSelectedPosition(String(e.target.selectedIndex));
+    }
 
     const handleChange = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -105,7 +112,7 @@ export default function NewUser(): JSX.Element {
             name: nameRef?.current?.value,
             surname: lastnameRef?.current?.value,
             team_id: teamRef?.current?.selectedIndex,
-            position_id: positionRef?.current?.selectedIndex,
+            position_id: Position,
             email: mailRef?.current?.value,
             phone_number: phoneRef?.current?.value
         });
@@ -171,7 +178,8 @@ export default function NewUser(): JSX.Element {
             
                 {/* პოზიცია */}
                 
-            <select disabled={teamRef.current?.value == 'თიმი'} required ref={positionRef} defaultValue="პოზიცია" onChange={e => setPosition(String(e.target.selectedIndex))} 
+            <select disabled={teamRef.current?.value == 'თიმი'} required ref={positionRef} defaultValue="პოზიცია"
+            onChange={e => handlePositions(e)}
             className="w-full bg-[#EBEBEB] font-semibold rounded-lg p-[1rem] text-sm mt-4 mb-4 ra-select m-0 md:m-8">
                 <option disabled hidden value="პოზიცია">პოზიცია</option>
                 {positions.filter((position:Position) => +Team == position.team_id).map((position: Team, index: number) => (
