@@ -1,3 +1,5 @@
+//? Types
+
 export type Laptop = { 
     image: string, 
     name: string,
