@@ -1,5 +1,7 @@
 import { atom } from "recoil";
 
+//? Global variebles
+
 export const modalState = atom({
     key: 'modalstate',
     default: false
