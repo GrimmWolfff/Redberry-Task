@@ -1,3 +1,6 @@
+
+//? Custom localstorage hook for typescript + useState
+
 import { useEffect, useState } from 'react';
 interface PersistentStorage {
     getItem(key: string): string | null
