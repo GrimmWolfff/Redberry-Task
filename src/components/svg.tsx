@@ -1,4 +1,7 @@
 import { motion } from "framer-motion";
+
+// Animated Modal svg
+
 export default function SVG() {
     return (
         <motion.svg className="mt-40 md:mt-0" width="196" height="215" viewBox="0 0 235 258" fill="none" xmlns="http://www.w3.org/2000/svg">
