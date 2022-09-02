@@ -1,3 +1,5 @@
+//? FIRST PAGE OF FORM
+
 import { FormEvent, useEffect, useState, useRef, ChangeEvent } from "react";
 import { motion } from 'framer-motion';
 import Modal from '../components/Modal';
