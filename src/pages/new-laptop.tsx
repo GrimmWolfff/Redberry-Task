@@ -369,7 +369,7 @@ export default function NewLaptop(): JSX.Element {
             <div className="gap-5 h-auto md:h-[16vh] w-full flex flex-col md:flex-row justify-between items-center">
                 <div className="flex flex-col md:w-5/12 w-[95%]">
                     <label htmlFor="date" className="font-semibold">შეძენის რიცხვი (არჩევითი)</label>                    
-                    <input onChange={e => setDate(e.target.value)} ref={dateRef} id="date" type="text" placeholder="დდ / თთ / წწწწ" 
+                    <input onChange={e => setDate(e.target.value)} ref={dateRef} id="date" type="date" placeholder="დდ / თთ / წწწწ" 
                     className={`input-success input w-full rounded-md mt-2 mb-2 p-2 border border-5`} />
                 </div>
 
